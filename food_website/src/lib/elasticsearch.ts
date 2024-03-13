@@ -1,6 +1,7 @@
 export interface SearchResult {
 	elapse: number;
 	results: Recipe[];
+	suggest: string;
 	status: string;
 }
 
