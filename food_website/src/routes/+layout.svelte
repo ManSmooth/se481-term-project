@@ -34,7 +34,7 @@
 	setContext('user', user);
 </script>
 
-<div class="flex justify-center flex-col p-8 gap-8">
+<div class="flex justify-start flex-col p-8 gap-8 min-h-[100vh] items-stretch">
 	<nav class="flex flex-col items-center justify-between">
 		<div class="grid grid-cols-3 bg-stone-200 items-center justify-between w-full">
 			<div class="flex flex-row gap-2 items-center">
