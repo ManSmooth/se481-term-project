@@ -3,11 +3,17 @@ import { page } from '$app/stores';
 /** @type {import('./$types').PageLoad} */
 export async function load({ fetch, url }) {
 	const res = await fetch(
-		`http://34.126.162.255:5000/search?query=${url.searchParams.get('query')}`
+		`https://34.126.162.255:5000/search?query=${url.searchParams.get('query')}`,
+		{
+			credentials: 'include'
+		}
 	);
 	const result: SearchResult = await res.json();
 	const suggest_res = await fetch(
-		`http://34.126.162.255:5000/suggest?query=${url.searchParams.get('query')}`
+		`https://34.126.162.255:5000/suggest?query=${url.searchParams.get('query')}`,
+		{
+			credentials: 'include'
+		}
 	);
 	const suggest_result: SearchResult = await suggest_res.json();
 

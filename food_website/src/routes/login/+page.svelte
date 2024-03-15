@@ -2,12 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
+	import { getUserInformation, type JWTResponse } from '$lib';
 
 	let username = '';
 	let password = '';
-	const jwt = getContext('jwt') as Writable<string>;
+	const user = getContext('user') as Writable<JWTResponse>;
 	function submitForm() {
-		fetch('http://34.126.162.255:5000/login', {
+		fetch('https://34.126.162.255:5000/login', {
 			method: 'POST',
 			body: JSON.stringify({
 				username,
@@ -15,11 +16,19 @@
 			}),
 			headers: {
 				'Content-Type': 'application/json'
-			}
+			},
+			credentials: 'include'
 		}).then((res) => {
-			res.json().then((res_json) => {
-				localStorage.setItem('jwt', res_json['access_token']);
-				jwt.set(res_json['access_token']);
+			res.json().then(() => {
+				getUserInformation()
+					.then((res) => {
+						if (res) {
+							user.set(res);
+						}
+					})
+					.catch((err) => {
+						goto('/login');
+					});
 				goto('/');
 			});
 		});

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { goto, invalidateAll } from '$app/navigation';
-	import { setContext } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	let query = '';
 	$: search_url = `/search?query=${query}`;
@@ -13,43 +13,51 @@
 	import type { JWTResponse } from '$lib';
 	import { getUserInformation } from '$lib';
 
-	// Create a store and update it when necessary...
-	const jwt = writable<string | null>();
 	const user = writable<JWTResponse | null>();
-	$: {
-		if ($jwt) {
-			getUserInformation($jwt).then((res) => {
+	onMount(() => {
+		getUserInformation()
+			.then((res) => {
 				if (res) {
 					user.set(res);
 				}
+			})
+			.catch((err) => {
+				goto('/login');
 			});
-		}
-	}
+	});
 	function logout() {
-		jwt.set(null);
 		user.set(null);
-		invalidateAll();
+		goto('/login');
+		localStorage.removeItem('jwt');
 	}
 	// ...and add it to the context for child components to access
-	setContext('jwt', jwt);
 	setContext('user', user);
 </script>
 
 <div class="flex justify-center flex-col p-8 gap-8">
 	<nav class="flex flex-col items-center justify-between">
 		<div class="grid grid-cols-3 bg-stone-200 items-center justify-between w-full">
-			<a href="/" class="text-3xl p-4 hover:text-lime-500 font-bold"
-				>Recipe<span class="text-lime-500">Me</span></a
-			>
+			<div class="flex flex-row gap-2 items-center">
+				<a href="/" class="text-3xl p-4 hover:text-lime-500 font-bold"
+					>Recipe<span class="text-lime-500">Me</span></a
+				>
+				<div class="flex flex-row px-4">
+					<a href="/folders" class="hover:text-lime-500 font-bold"
+						>Folders</a
+					>
+				</div>
+			</div>
 			<div class="flex flex-row gap-2 items-center justify-self-center">
-				<input
-					bind:value={query}
-					type="text"
-					class="bg-stone-300 rounded-sm border-b-2 border-black border-opacity-50 w-96 px-2 py-1 focus:border-lime-500 focus:bg-stone-200 outline-none transition-all"
-					placeholder="Search for recipes"
-					on:keypress={handleEnter}
-				/>
-				<a class="hover:text-lime-500" href="/search?query={query}">Search</a>
+				{#if $user}
+					<input
+						bind:value={query}
+						type="text"
+						class="bg-stone-300 rounded-sm border-b-2 border-black border-opacity-50 w-96 px-2 py-1 focus:border-lime-500 focus:bg-stone-200 outline-none transition-all"
+						placeholder="Search for recipes"
+						on:keypress={handleEnter}
+					/>
+					<a class="hover:text-lime-500" href="/search?query={query}">Search</a>
+				{/if}
 			</div>
 			<div class="p-4 flex flex-row gap-4 justify-self-end">
 				{#if $user}

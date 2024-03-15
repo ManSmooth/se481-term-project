@@ -10,21 +10,16 @@ export interface JWTResponse {
 	type: string;
 }
 
-export async function getUserInformation(jwt: string | undefined): Promise<JWTResponse | null> {
-	if (!jwt) {
-		return null;
-	}
-	return fetch('http://34.126.162.255:5000/user-detail', {
-		headers: {
-			Authorization: `Bearer ${jwt}`
-		}
+export async function getUserInformation(): Promise<JWTResponse | null> {
+	return fetch('https://34.126.162.255:5000/user-detail', {
+		credentials: 'include'
 	})
 		.then(async (res) => {
 			const res_json = await res.json();
 			return res_json;
 		})
 		.catch((err) => {
-			return null;
+			return Promise.reject(err);
 		});
 }
 
