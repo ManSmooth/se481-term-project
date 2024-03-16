@@ -36,12 +36,12 @@
 	$: suggestion = data.suggest_result.suggest as string;
 	$: query = data.query as string;
 	onMount(() => {
-		if(!recipes) {
-			goto("/login", {
+		if (!recipes) {
+			goto('/login', {
 				invalidateAll: true
-			})
+			});
 		}
-	})
+	});
 </script>
 
 {#if query !== suggestion}
@@ -290,11 +290,8 @@
 							</div>
 						{/if}
 					</div>
-					<!-- <p>
-					{recipe.Description}
-				</p> -->
 				</div>
-				<div class="flex flex-col gap-4">
+				<div class="flex flex-col gap-4 w-full">
 					<div class="flex flex-row gap-2 justify-around w-full font-sans">
 						<div class="flex flex-col items-center">
 							<p class="text-xs">Cook Time</p>

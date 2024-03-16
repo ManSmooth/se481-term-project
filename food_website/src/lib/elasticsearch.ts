@@ -5,7 +5,23 @@ export interface SearchResult {
 	status: string;
 }
 
+export interface FolderResult {
+	elapse: number
+	results: Folder[]
+	status: string
+	total_hit: number
+}
+
+
+export interface Folder {
+	folder_name: string
+	index: number
+	username: string
+	recipes: Recipe[]
+}
+
 export interface Recipe {
+	rating: number;
 	AggregatedRating: number;
 	AuthorId: number;
 	AuthorName: string;
