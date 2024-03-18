@@ -36,6 +36,7 @@
 		{#if Object.entries(recommendations.results).length}
 			<div
 				class="flex flex-col bg-gradient-to-tr from-fuchsia-600 to-teal-500 rounded-md text-center relative"
+				role="listitem"
 			>
 				<div
 					class="absolute top-0 left-0 right-0 bottom-0 bg-[url('https://as2.ftcdn.net/v2/jpg/02/17/70/57/1000_F_217705767_Qs5URQQFJ3dHmqq733X5g9eABkdgWson.jpg')] opacity-15 rounded-md"
