@@ -21,18 +21,16 @@
 			},
 			credentials: 'include'
 		}).then((res) => {
-			res.json().then((res_json) => {
-				getUserInformation()
-					.then((res) => {
-						if (res) {
-							user.set(res);
-						}
-					})
-					.catch((err) => {
-						goto('/login');
-					});
-				goto('/');
-			});
+			getUserInformation()
+				.then((res) => {
+					if (res) {
+						user.set(res);
+					}
+				})
+				.catch((err) => {
+					goto('/login');
+				});
+			goto('/');
 		});
 	}
 </script>
@@ -40,7 +38,7 @@
 <div class="flex flex-row gap-8 justify-center font-serif items-center">
 	<form
 		class="bg-stone-200 p-8 flex flex-col flex-1 max-w-xl shadow-lg gap-8 font-sans justify-center"
-		on:submit={submitForm}
+		on:submit|preventDefault={submitForm}
 	>
 		<div class="flex flex-col gap-2">
 			<p class="text-xl">Username</p>

@@ -1,6 +1,7 @@
 import type { Recipe, SearchResult } from '$lib';
 
 /** @type {import('./$types').PageLoad} */
+export const ssr = false;
 export async function load({ fetch, params }) {
 	const res = await fetch(`https://34.126.162.255:5000/recipes/${params.id}`, {
 		credentials: 'include'

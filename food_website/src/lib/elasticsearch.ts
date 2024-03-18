@@ -5,6 +5,23 @@ export interface SearchResult {
 	status: string;
 }
 
+export interface RecommendResult {
+	elapse: number
+	results: RecommendResults
+	status: string
+}
+
+export interface RecommendResults {
+	recommend_from_folder: RecommendationResult
+	recommend_from_random: RecommendationResult
+	recommend_from_summary: RecommendationResult
+}
+
+export interface RecommendationResult {
+	folder_name: string
+	results: Recipe[]
+}
+
 export interface FolderResult {
 	elapse: number
 	results: Folder[]
@@ -55,6 +72,9 @@ export interface Recipe {
 const iso8601DurationRegex =
 	/(-)?P(?:([.,\d]+)Y)?(?:([.,\d]+)M)?(?:([.,\d]+)W)?(?:([.,\d]+)D)?T(?:([.,\d]+)H)?(?:([.,\d]+)M)?(?:([.,\d]+)S)?/;
 export function parseDuration(iso8601Duration: string) {
+	if (!iso8601Duration) {
+		return {}
+	}
 	var matches = iso8601Duration.match(iso8601DurationRegex);
 	if (matches) {
 		return {

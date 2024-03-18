@@ -3,6 +3,7 @@
 	import { goto, invalidateAll } from '$app/navigation';
 	import { onMount, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
+
 	let query = '';
 	$: search_url = `/search?query=${query}`;
 	function handleEnter(event: KeyboardEvent) {
@@ -22,13 +23,13 @@
 				}
 			})
 			.catch((err) => {
-				goto('/login');
+				logout();
 			});
 	});
 	function logout() {
 		user.set(null);
+		document.cookie=""
 		goto('/login');
-		localStorage.removeItem('jwt');
 	}
 	// ...and add it to the context for child components to access
 	setContext('user', user);
@@ -42,13 +43,11 @@
 					>Recipe<span class="text-lime-500">Me</span></a
 				>
 				<div class="flex flex-row px-4">
-					<a href="/folders" class="hover:text-lime-500 font-bold"
-						>Folders</a
-					>
+					<a href="/folders" class="hover:text-lime-500 font-bold">Folders</a>
 				</div>
 			</div>
 			<div class="flex flex-row gap-2 items-center justify-self-center">
-				{#if $user}
+				{#if $user && $user.sub != undefined}
 					<input
 						bind:value={query}
 						type="text"
@@ -60,7 +59,7 @@
 				{/if}
 			</div>
 			<div class="p-4 flex flex-row gap-4 justify-self-end">
-				{#if $user}
+				{#if $user && $user.sub != undefined}
 					<p>Logged in as: <span class="italic">{$user.disp}</span></p>
 					<button on:click={logout} class="hover:text-lime-500 font-bold">Logout</button>
 				{:else}
