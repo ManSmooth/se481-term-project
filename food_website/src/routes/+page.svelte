@@ -2,8 +2,8 @@
 	import type { Recipe } from '$lib';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import type { Folder, RecommendResult, RecommendResults } from '$lib/elasticsearch';
-	import CardAndModal from '$lib/recipe_card.svelte';
+	import type { Folder, RecommendResult } from '$lib/elasticsearch';
+	import RecipeCard from '$lib/recipe_card.svelte';
 	/** @type {import('./$types').PageData} */
 	export let data: any;
 	async function get_recommendations() {
@@ -16,10 +16,10 @@
 	$: folders = data.folder_result.results as Folder[];
 	$: other_recommendations = data.other_recommend.results as Recipe[];
 	onMount(() => {
-		if(!("results" in data.other_recommend)) {
-			goto("/login")
+		if (!('results' in data.other_recommend)) {
+			goto('/login');
 		}
-	})
+	});
 </script>
 
 <div class="flex flex-col gap-8 font-serif">
@@ -49,7 +49,7 @@
 				{#if recommendations.results.recommend_from_summary.results.length > 1}
 					<div class="grid grid-cols-3 gap-8 p-8 z-10">
 						{#each recommendations.results.recommend_from_summary.results as recipe}
-							<CardAndModal bind:recipe bind:folders></CardAndModal>
+							<RecipeCard bind:recipe bind:folders></RecipeCard>
 						{/each}
 					</div>
 				{:else}
@@ -77,7 +77,7 @@
 				{#if recommendations.results.recommend_from_folder.results.length > 1}
 					<div class="grid grid-cols-3 gap-8 p-8 z-10">
 						{#each recommendations.results.recommend_from_folder.results as recipe}
-							<CardAndModal bind:recipe bind:folders></CardAndModal>
+							<RecipeCard bind:recipe bind:folders></RecipeCard>
 						{/each}
 					</div>
 				{:else}
@@ -104,7 +104,7 @@
 				</p>
 				<div class="grid grid-cols-3 gap-8 p-8 z-10">
 					{#each recommendations.results.recommend_from_random.results as recipe}
-						<CardAndModal bind:recipe bind:folders></CardAndModal>
+						<RecipeCard bind:recipe bind:folders></RecipeCard>
 					{/each}
 				</div>
 			</div>
@@ -121,7 +121,7 @@
 				</p>
 				<div class="grid grid-cols-3 gap-8 p-8 z-10">
 					{#each other_recommendations as recipe}
-						<CardAndModal bind:recipe bind:folders></CardAndModal>
+						<RecipeCard bind:recipe bind:folders></RecipeCard>
 					{/each}
 				</div>
 			</div>
@@ -139,7 +139,7 @@
 				</p>
 				<div class="grid grid-cols-3 gap-8 p-8 z-10">
 					{#each other_recommendations as recipe}
-						<CardAndModal bind:recipe bind:folders></CardAndModal>
+						<RecipeCard bind:recipe bind:folders></RecipeCard>
 					{/each}
 				</div>
 			</div>
@@ -158,7 +158,7 @@
 			</p>
 			<div class="grid grid-cols-3 gap-8 p-8 z-10">
 				{#each other_recommendations as recipe}
-					<CardAndModal bind:recipe bind:folders></CardAndModal>
+					<RecipeCard bind:recipe bind:folders></RecipeCard>
 				{/each}
 			</div>
 		</div>
